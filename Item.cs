@@ -16,7 +16,8 @@ namespace C_Sharp_Regex{
         }       
 
         public string toString(){
-            return "name: " + name + ", price: " + price + ", type: " + type + ", expiration: " + expirationDate + "\n";
+            return String.Format("name: {0}, price: {1}, type: {2}, expiration: {3}\n",name,price,type,expirationDate);
+        
         } 
     }
 }

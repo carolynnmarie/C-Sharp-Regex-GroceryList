@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace C_Sharp_Regex{
     class ItemParser{
@@ -12,10 +13,10 @@ namespace C_Sharp_Regex{
 
         public List<Item> rawStringToItemList(string rawData){
 
-            string lowerCase = toLowerCase(rawData);
-            string uCFirstLetter = upperCaseFirstLetter(lowerCase);
-            string normal = Regex.Replace(uCFirstLetter,"[\\^%*!@]",";");
-            string[] stringList = Regex.Split(normal, "##");
+            string normalized = toLowerCase(rawData);
+            normalized = upperCaseFirstLetter(normalized);
+            normalized = Regex.Replace(normalized,"[\\^%*!@]",";");
+            string[] stringList = Regex.Split(normalized, "##");
             return stringListToItemList(stringList);
         }
 
@@ -40,13 +41,11 @@ namespace C_Sharp_Regex{
                 if(Regex.IsMatch(array[0],"name")){
                     item.name = array[1];
                 } else if(Regex.IsMatch(array[0],"price")){
-                    double pr;
                     try{
-                        pr = double.Parse(array[1]);
+                        item.price = double.Parse(array[1]);
                     } catch(System.FormatException){
-                        pr = 0;
+                        item.price = 0;
                     }
-                    item.price = pr;
                 } else if(Regex.IsMatch(array[0],"type")){
                     item.type = array[1];
                 } else if(Regex.IsMatch(array[0],"expiration")){
@@ -57,10 +56,8 @@ namespace C_Sharp_Regex{
         }
 
         public string toLowerCase(string input){
-            string alphabetLower = "a b c d e f g h i j k l m n o p q r s t u v w x y z";
-            string[] lower = Regex.Split(alphabetLower," ");
-            string alphabetUpper = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
-            string[] upper = Regex.Split(alphabetUpper, " ");
+            string[] lower = Regex.Split("a b c d e f g h i j k l m n o p q r s t u v w x y z", " ");
+            string[] upper = Regex.Split("A B C D E F G H I J K L M N O P Q R S T U V W X Y Z", " ");
             for(int i = 0; i<lower.Length; i++){
                 Regex rgx = new Regex(upper[i]);
                 input = rgx.Replace(input,lower[i]);
@@ -81,38 +78,37 @@ namespace C_Sharp_Regex{
 
         public string printGroceryList(List<Item> list){
            Dictionary<string,int> names = new Dictionary<string, int>();
-           string groceryList = "";
-
+           StringBuilder groceryList = new StringBuilder();
            foreach(Item item in list){
-               int x = countNameOccurrences(list,item.name);
+               int x = countNameOccurrences(list, item.name);
                if(!names.ContainsKey(item.name)){
-                   names.Add(item.name,x);
+                   names.Add(item.name, x);
                }
            }
            foreach(KeyValuePair<string,int> pair in names){
                Dictionary<double,int> prices = new Dictionary<double, int>();
                foreach(Item item in list){
+                   int y = countPriceOccurrences(list, item.name, item.price);
                    if(pair.Key == item.name && !prices.ContainsKey(item.price)){
-                       int y = countPriceOccurrences(list,item.name,item.price);
-                       prices.Add(item.price,y);
+                       prices.Add(item.price, y);
                    }
                }
-
-               groceryList += "name: " + pair.Key + "    seen: " + pair.Value + "\n";
+               groceryList.Append(String.Format("name: {0,7}     seen: {1} times\n", pair.Key, pair.Value))
+                          .Append("=============     =============\n");
                foreach(KeyValuePair<double,int> prc in prices){
-                   groceryList += "price: " + prc.Key + "   seen: " + prc.Value + "\n";
+                   groceryList.Append(String.Format("price:  ${0,4}     seen: {1} times\n", prc.Key, prc.Value))
+                              .Append("-------------     -------------\n");
                }
-               groceryList += "\n";
-               
+               groceryList.Append("\n");
            }
-           groceryList += "errors: " + exceptionCounter;
-           return groceryList;
+           groceryList.Append(String.Format("{0,-18}seen: {1} times", "errors:", exceptionCounter));
+           return groceryList.ToString();
         }
 
         private int countNameOccurrences(List<Item> list, string name){
             int x = 0;
             foreach(Item item in list){
-                if(name == item.name){
+                if(Regex.IsMatch(item.name,name)){
                     x++;
                 }
             }
@@ -122,20 +118,11 @@ namespace C_Sharp_Regex{
         private int countPriceOccurrences(List<Item> list, string name, double price){
             int x = 0;
             foreach(Item item in list){
-                if(item.name == name && item.price == price){
+                if(Regex.IsMatch(item.name, name) && item.price == price){
                     x++;
                 }
             }
             return x;
-        }
-
-
-        public string printParsedList(List<Item> list){
-            string id = "";
-            foreach(Item item in list){
-                id += item.toString();
-            }
-            return id;
         }
 
     }
