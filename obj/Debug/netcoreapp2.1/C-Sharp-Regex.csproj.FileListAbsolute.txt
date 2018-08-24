@@ -1,0 +1,11 @@
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/bin/Debug/netcoreapp2.1/C-Sharp-Regex.deps.json
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/bin/Debug/netcoreapp2.1/C-Sharp-Regex.runtimeconfig.json
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/bin/Debug/netcoreapp2.1/C-Sharp-Regex.runtimeconfig.dev.json
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/bin/Debug/netcoreapp2.1/C-Sharp-Regex.dll
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/bin/Debug/netcoreapp2.1/C-Sharp-Regex.pdb
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/obj/Debug/netcoreapp2.1/C-Sharp-Regex.csprojAssemblyReference.cache
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/obj/Debug/netcoreapp2.1/C-Sharp-Regex.csproj.CoreCompileInputs.cache
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/obj/Debug/netcoreapp2.1/C-Sharp-Regex.AssemblyInfoInputs.cache
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/obj/Debug/netcoreapp2.1/C-Sharp-Regex.AssemblyInfo.cs
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/obj/Debug/netcoreapp2.1/C-Sharp-Regex.dll
+/Users/carolynn/dev/C-Sharp/C-Sharp-Regex/obj/Debug/netcoreapp2.1/C-Sharp-Regex.pdb
