@@ -77,22 +77,10 @@ namespace C_Sharp_Regex{
         }
 
         public string printGroceryList(List<Item> list){
-           Dictionary<string,int> names = new Dictionary<string, int>();
            StringBuilder groceryList = new StringBuilder();
-           foreach(Item item in list){
-               int x = countNameOccurrences(list, item.name);
-               if(!names.ContainsKey(item.name)){
-                   names.Add(item.name, x);
-               }
-           }
+           Dictionary<string,int> names = nameOccurrences(list);
            foreach(KeyValuePair<string,int> pair in names){
-               Dictionary<double,int> prices = new Dictionary<double, int>();
-               foreach(Item item in list){
-                   int y = countPriceOccurrences(list, item.name, item.price);
-                   if(pair.Key == item.name && !prices.ContainsKey(item.price)){
-                       prices.Add(item.price, y);
-                   }
-               }
+               Dictionary<double,int> prices = itemPrices(pair,list);
                groceryList.Append(String.Format("name: {0,7}     seen: {1} times\n", pair.Key, pair.Value))
                           .Append("=============     =============\n");
                foreach(KeyValuePair<double,int> prc in prices){
@@ -105,22 +93,38 @@ namespace C_Sharp_Regex{
            return groceryList.ToString();
         }
 
+        private Dictionary<string, int> nameOccurrences(List<Item>list){
+            Dictionary<string,int> names = new Dictionary<string, int>();
+            foreach(Item item in list){
+               int x = countNameOccurrences(list, item.name);
+               if(!names.ContainsKey(item.name)) names.Add(item.name, x);
+           }
+           return names;
+        }
+
         private int countNameOccurrences(List<Item> list, string name){
             int x = 0;
             foreach(Item item in list){
-                if(Regex.IsMatch(item.name,name)){
-                    x++;
-                }
+                if(Regex.IsMatch(item.name,name))x++;
             }
             return x;
         }
 
-        private int countPriceOccurrences(List<Item> list, string name, double price){
+        private Dictionary<double, int> itemPrices(KeyValuePair<string,int> pair,List<Item>list){
+            Dictionary<double,int> prices = new Dictionary<double, int>();
+            foreach(Item item in list){
+                int y = countPriceOccurrences(list, item);
+                if(pair.Key == item.name && !prices.ContainsKey(item.price)){
+                    prices.Add(item.price, y);
+               }
+           }
+           return prices;
+        }
+
+        private int countPriceOccurrences(List<Item> list, Item groceryItem){
             int x = 0;
             foreach(Item item in list){
-                if(Regex.IsMatch(item.name, name) && item.price == price){
-                    x++;
-                }
+                if(Regex.IsMatch(item.name, groceryItem.name) && item.price == groceryItem.price) x++;
             }
             return x;
         }
